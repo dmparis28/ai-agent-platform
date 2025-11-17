@@ -1,0 +1,118 @@
+﻿# ============================================
+# Terraform Files
+# ============================================
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+!example.tfvars
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# ============================================
+# AWS & Cloud Credentials
+# ============================================
+*.pem
+*.key
+*.crt
+credentials
+config
+.aws/
+
+# ============================================
+# Secrets & API Keys
+# ============================================
+.env
+.env.local
+.env.production
+*.secret
+*secrets*
+service-account.json
+firebase-admin-key.json
+
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# ============================================
+# Node.js & Frontend
+# ============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+.parcel-cache/
+dist/
+build/
+.next/
+out/
+
+# ============================================
+# IDEs & Editors
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================
+# Docker
+# ============================================
+docker-compose.override.yml
+
+# ============================================
+# Kubernetes
+# ============================================
+kubeconfig
+*.kubeconfig
+
+# ============================================
+# Logs
+# ============================================
+*.log
+logs/
+
+# ============================================
+# OS Files
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ============================================
+# Backup Files
+# ============================================
+*.bak
+*.backup
+*.tmp

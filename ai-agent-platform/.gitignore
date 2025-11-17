@@ -1,0 +1,59 @@
+﻿# Node modules
+node_modules/
+fe/node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.Python
+venv/
+ENV/
+.venv
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Environment variables
+.env
+.env.local
+*.env
+
+# AWS
+.aws/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# Docker
+*.tar
+
+# Secrets
+**/service-account.json
+**/secrets.yaml
+*.pem
+*.key
+
+# Cost reports
+cost-reports/
