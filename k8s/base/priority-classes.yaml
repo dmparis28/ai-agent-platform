@@ -1,0 +1,23 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: agent-high-priority
+value: 1000
+globalDefault: false
+description: "High priority for Architecture and Security agents"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: agent-medium-priority
+value: 500
+globalDefault: false
+description: "Medium priority for standard development agents"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: agent-low-priority
+value: 100
+globalDefault: false
+description: "Low priority for documentation and triage agents"

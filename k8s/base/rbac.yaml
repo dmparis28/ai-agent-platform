@@ -1,0 +1,166 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: agent-role
+  namespace: ai-agents
+rules:
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["pods", "pods/log"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: triage-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: triage-agent
+  namespace: ai-agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: frontend-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: frontend-agent
+  namespace: ai-agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: backend-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: backend-agent
+  namespace: ai-agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: network-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: network-agent
+  namespace: ai-agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: debug-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: debug-agent
+  namespace: ai-agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: qa-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: qa-agent
+  namespace: ai-agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sre-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: sre-agent
+  namespace: ai-agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: doc-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: doc-agent
+  namespace: ai-agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pm-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: pm-agent
+  namespace: ai-agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: arch-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: arch-agent
+  namespace: ai-agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sec-audit-agent-binding
+  namespace: ai-agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent-role
+subjects:
+- kind: ServiceAccount
+  name: sec-audit-agent
+  namespace: ai-agents

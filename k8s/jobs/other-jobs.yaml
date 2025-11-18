@@ -1,0 +1,239 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: network-job-TASK_ID
+  namespace: ai-agents
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: network-agent
+      restartPolicy: Never
+      priorityClassName: agent-medium-priority
+      nodeSelector:
+        workload-type: medium-gpu
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: network-agent
+        image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ai-agents/network:latest
+        resources:
+          requests:
+            cpu: "2000m"
+            memory: "8Gi"
+            nvidia.com/gpu: "1"
+          limits:
+            cpu: "4000m"
+            memory: "16Gi"
+            nvidia.com/gpu: "1"
+        env:
+        - name: TASK_ID
+          value: "TASK_ID"
+        - name: CLAUDE_MODEL
+          value: "claude-sonnet-4-20250514"
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: anthropic-api-key
+              key: api-key
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: debug-job-TASK_ID
+  namespace: ai-agents
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: debug-agent
+      restartPolicy: Never
+      priorityClassName: agent-medium-priority
+      nodeSelector:
+        workload-type: medium-gpu
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: debug-agent
+        image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ai-agents/debug:latest
+        resources:
+          requests:
+            cpu: "2000m"
+            memory: "8Gi"
+            nvidia.com/gpu: "1"
+          limits:
+            cpu: "4000m"
+            memory: "16Gi"
+            nvidia.com/gpu: "1"
+        env:
+        - name: TASK_ID
+          value: "TASK_ID"
+        - name: CLAUDE_MODEL
+          value: "claude-sonnet-4-20250514"
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: anthropic-api-key
+              key: api-key
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: qa-job-TASK_ID
+  namespace: ai-agents
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: qa-agent
+      restartPolicy: Never
+      priorityClassName: agent-medium-priority
+      nodeSelector:
+        workload-type: medium-gpu
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: qa-agent
+        image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ai-agents/qa:latest
+        resources:
+          requests:
+            cpu: "2000m"
+            memory: "8Gi"
+            nvidia.com/gpu: "1"
+          limits:
+            cpu: "4000m"
+            memory: "16Gi"
+            nvidia.com/gpu: "1"
+        env:
+        - name: TASK_ID
+          value: "TASK_ID"
+        - name: CLAUDE_MODEL
+          value: "claude-sonnet-4-20250514"
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: anthropic-api-key
+              key: api-key
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sre-job-TASK_ID
+  namespace: ai-agents
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: sre-agent
+      restartPolicy: Never
+      priorityClassName: agent-medium-priority
+      nodeSelector:
+        workload-type: medium-gpu
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: sre-agent
+        image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ai-agents/sre:latest
+        resources:
+          requests:
+            cpu: "2000m"
+            memory: "8Gi"
+            nvidia.com/gpu: "1"
+          limits:
+            cpu: "4000m"
+            memory: "16Gi"
+            nvidia.com/gpu: "1"
+        env:
+        - name: TASK_ID
+          value: "TASK_ID"
+        - name: CLAUDE_MODEL
+          value: "claude-sonnet-4-20250514"
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: anthropic-api-key
+              key: api-key
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: doc-job-TASK_ID
+  namespace: ai-agents
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: doc-agent
+      restartPolicy: Never
+      priorityClassName: agent-low-priority
+      nodeSelector:
+        workload-type: cpu
+      containers:
+      - name: doc-agent
+        image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ai-agents/doc:latest
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "1000m"
+            memory: "2Gi"
+        env:
+        - name: TASK_ID
+          value: "TASK_ID"
+        - name: CLAUDE_MODEL
+          value: "claude-sonnet-4-20250514"
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: anthropic-api-key
+              key: api-key
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pm-job-TASK_ID
+  namespace: ai-agents
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: pm-agent
+      restartPolicy: Never
+      priorityClassName: agent-low-priority
+      nodeSelector:
+        workload-type: cpu
+      containers:
+      - name: pm-agent
+        image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ai-agents/pm:latest
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "1000m"
+            memory: "2Gi"
+        env:
+        - name: TASK_ID
+          value: "TASK_ID"
+        - name: CLAUDE_MODEL
+          value: "claude-sonnet-4-20250514"
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: anthropic-api-key
+              key: api-key

@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: arch-job-TASK_ID
+  namespace: ai-agents
+  labels:
+    app: ai-agent
+    agent-type: architecture
+    task-id: TASK_ID
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app: ai-agent
+        agent-type: architecture
+        task-id: TASK_ID
+    spec:
+      serviceAccountName: arch-agent
+      restartPolicy: Never
+      priorityClassName: agent-high-priority
+      nodeSelector:
+        workload-type: high-gpu
+        gpu-type: a100
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: arch-agent
+        image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ai-agents/arch:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "8000m"
+            memory: "64Gi"
+            nvidia.com/gpu: "1"
+          limits:
+            cpu: "16000m"
+            memory: "128Gi"
+            nvidia.com/gpu: "1"
+        env:
+        - name: TASK_ID
+          value: "TASK_ID"
+        - name: TASK_DESCRIPTION
+          value: "TASK_DESCRIPTION"
+        - name: CLAUDE_MODEL
+          value: "claude-opus-4-20250514"
+        - name: TOKEN_BUDGET
+          value: "50000"
+        - name: AWS_REGION
+          value: "us-east-1"
+        - name: ENVIRONMENT
+          value: "personal"
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: anthropic-api-key
+              key: api-key
