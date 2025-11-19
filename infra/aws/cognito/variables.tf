@@ -1,27 +1,52 @@
-variable "project_name" {
-  description = "Project name for resource naming"
-  type        = string
-}
+# infra/aws/cognito/variables.tf
 
 variable "cognito_domain" {
-  description = "Cognito domain prefix (must be globally unique)"
+  description = "Cognito domain prefix"
   type        = string
 }
 
 variable "callback_urls" {
-  description = "List of callback URLs for OAuth"
+  description = "Allowed callback URLs"
   type        = list(string)
   default     = ["http://localhost:3000/callback"]
 }
 
 variable "logout_urls" {
-  description = "List of logout URLs"
+  description = "Allowed logout URLs"
   type        = list(string)
   default     = ["http://localhost:3000/"]
 }
 
+variable "google_client_id" {
+  description = "Google OAuth client ID"
+  type        = string
+  sensitive   = true
+}
+
+variable "google_client_secret" {
+  description = "Google OAuth client secret"
+  type        = string
+  sensitive   = true
+}
+
+variable "api_gateway_arn" {
+  description = "API Gateway ARN"
+  type        = string
+}
+
+variable "artifacts_bucket_arn" {
+  description = "S3 artifacts bucket ARN"
+  type        = string
+}
+
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "us-east-1"
+}
+
 variable "tags" {
-  description = "Common tags for all resources"
+  description = "Common tags"
   type        = map(string)
   default     = {}
 }
