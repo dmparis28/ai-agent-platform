@@ -1,9 +1,3 @@
-# Variable Declarations for Personal Environment
-
-# ============================================
-# Basic Configuration
-# ============================================
-
 variable "aws_region" {
   description = "AWS region for deployment"
   type        = string
@@ -31,10 +25,6 @@ variable "availability_zones" {
   description = "List of availability zones"
   type        = list(string)
 }
-
-# ============================================
-# Node Group Variables
-# ============================================
 
 variable "cpu_node_group" {
   description = "CPU node group configuration"
@@ -72,10 +62,6 @@ variable "high_gpu_node_group" {
   })
 }
 
-# ============================================
-# Networking Variables
-# ============================================
-
 variable "vpc_cidr" {
   description = "CIDR block for VPC"
   type        = string
@@ -109,7 +95,6 @@ variable "one_nat_gateway_per_az" {
   default     = false
 }
 
-# VPC Endpoints
 variable "enable_s3_endpoint" {
   description = "Enable S3 VPC endpoint"
   type        = bool
@@ -138,6 +123,135 @@ variable "enable_sts_endpoint" {
   description = "Enable STS VPC endpoint"
   type        = bool
   default     = false
+}
+
+variable "common_tags" {
+  description = "Common tags to apply to all resources"
+  type        = map(string)
+  default     = {}
+}
+
+# ============================================
+# Module Toggles
+# ============================================
+
+variable "enable_eks" {
+  description = "Enable EKS cluster deployment"
+  type        = bool
+  default     = false
+}
+
+variable "enable_ecr" {
+  description = "Enable ECR repositories"
+  type        = bool
+  default     = false
+}
+
+variable "enable_lambda" {
+  description = "Enable Lambda agents"
+  type        = bool
+  default     = true
+}
+
+variable "enable_h100" {
+  description = "Enable H100 GPU instance"
+  type        = bool
+  default     = true
+}
+
+# ============================================
+# Lambda Configuration
+# ============================================
+
+variable "lambda_packages_dir" {
+  description = "Directory containing Lambda deployment packages"
+  type        = string
+  default     = "../../../lambda_packages"
+}
+
+variable "dependencies_layer_path" {
+  description = "Path to Lambda layer zip with dependencies"
+  type        = string
+  default     = "../../../lambda_packages/dependencies_layer.zip"
+}
+
+# ============================================
+# H100 Configuration
+# ============================================
+
+variable "h100_instance_type" {
+  description = "EC2 instance type for H100 GPU"
+  type        = string
+  default     = "p4d.24xlarge"
+}
+
+variable "h100_idle_timeout" {
+  description = "Idle timeout in seconds before H100 shuts down"
+  type        = number
+  default     = 1800
+}
+
+# ============================================
+# Cognito Configuration
+# ============================================
+
+variable "cognito_domain" {
+  description = "Cognito domain prefix (must be globally unique)"
+  type        = string
+}
+
+variable "cognito_callback_urls" {
+  description = "Allowed callback URLs for OAuth"
+  type        = list(string)
+  default     = ["http://localhost:3000/callback"]
+}
+
+variable "cognito_logout_urls" {
+  description = "Allowed logout URLs"
+  type        = list(string)
+  default     = ["http://localhost:3000/"]
+}
+
+variable "google_client_id" {
+  description = "Google OAuth client ID"
+  type        = string
+  sensitive   = true
+}
+
+variable "google_client_secret" {
+  description = "Google OAuth client secret"
+  type        = string
+  sensitive   = true
+}
+
+# ============================================
+# Secrets
+# ============================================
+
+variable "anthropic_secret_name" {
+  description = "Name of Anthropic API key secret in Secrets Manager"
+  type        = string
+}
+
+# ============================================
+# Monitoring
+# ============================================
+
+variable "alert_email" {
+  description = "Email address for budget and monitoring alerts"
+  type        = string
+}
+
+variable "enable_detailed_monitoring" {
+  description = "Enable detailed CloudWatch monitoring"
+  type        = bool
+  default     = true
+}
+
+variable "log_retention_days" {
+  description = "CloudWatch log retention in days"
+  type        = number
+  default     = 7
 }
 
 # ============================================
@@ -169,77 +283,4 @@ variable "cleanup_schedule" {
   description = "Cron schedule for nightly cleanup"
   type        = string
   default     = "cron(0 2 * * ? *)"
-}
-
-# ============================================
-# Secrets
-# ============================================
-
-variable "anthropic_secret_name" {
-  description = "Name of Anthropic API key secret in Secrets Manager"
-  type        = string
-}
-
-variable "firebase_secret_name" {
-  description = "Name of Firebase config secret in Secrets Manager"
-  type        = string
-}
-
-# ============================================
-# Monitoring
-# ============================================
-
-variable "alert_email" {
-  description = "Email address for budget and monitoring alerts"
-  type        = string
-}
-
-variable "enable_detailed_monitoring" {
-  description = "Enable detailed CloudWatch monitoring"
-  type        = bool
-  default     = true
-}
-
-variable "log_retention_days" {
-  description = "CloudWatch log retention in days"
-  type        = number
-  default     = 7
-}
-
-# ============================================
-# Autoscaling
-# ============================================
-
-variable "enable_cluster_autoscaler" {
-  description = "Enable Kubernetes cluster autoscaler"
-  type        = bool
-  default     = true
-}
-
-variable "scale_down_delay_after_add" {
-  description = "Time to wait after scale up before considering scale down"
-  type        = string
-  default     = "30s"
-}
-
-variable "scale_down_unneeded_time" {
-  description = "Time a node must be idle before scaling down"
-  type        = string
-  default     = "30s"
-}
-
-variable "scale_down_utilization_threshold" {
-  description = "Node utilization threshold for scale down"
-  type        = number
-  default     = 0.5
-}
-
-# ============================================
-# Tags
-# ============================================
-
-variable "common_tags" {
-  description = "Common tags to apply to all resources"
-  type        = map(string)
-  default     = {}
 }

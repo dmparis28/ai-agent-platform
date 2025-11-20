@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package intelligence;
+
+service SharedIntelligence {
+    rpc QueryContext (ContextRequest) returns (ContextResponse);
+    rpc StoreResult (ResultRequest) returns (StoreResponse);
+    rpc CrossAgentLearn (CrossAgentRequest) returns (CrossAgentResponse);
+}
+
+message ContextRequest {
+    string task_description = 1;
+    string agent_type = 2;
+    string task_id = 3;
+}
+
+message ContextResponse {
+    string relevant_patterns = 1;
+}
+
+message ResultRequest {
+    string task_id = 1;
+    string agent_type = 2;
+    bool success = 3;
+    string result_data = 4;
+}
+
+message StoreResponse {
+    bool success = 1;
+}
+
+message CrossAgentRequest {
+    string source_agent = 1;
+    string target_agent = 2;
+}
+
+message CrossAgentResponse {
+    string shared_patterns = 1;
+}

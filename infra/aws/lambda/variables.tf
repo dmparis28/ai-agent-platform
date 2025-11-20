@@ -1,4 +1,4 @@
-# infra/aws/lambda/variables.tf
+# Lambda Module Variables
 
 variable "vpc_id" {
   description = "VPC ID"

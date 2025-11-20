@@ -1,5 +1,3 @@
-# VPC Module Variables
-
 variable "vpc_name" {
   description = "Name of the VPC"
   type        = string
@@ -37,13 +35,13 @@ variable "enable_nat_gateway" {
 }
 
 variable "single_nat_gateway" {
-  description = "Use a single NAT Gateway for all private subnets (cost optimization)"
+  description = "Use a single NAT Gateway for all private subnets"
   type        = bool
   default     = true
 }
 
 variable "one_nat_gateway_per_az" {
-  description = "Create one NAT Gateway per AZ (high availability)"
+  description = "Create one NAT Gateway per AZ"
   type        = bool
   default     = false
 }
@@ -55,7 +53,7 @@ variable "enable_s3_endpoint" {
 }
 
 variable "enable_ecr_endpoints" {
-  description = "Enable ECR VPC Interface Endpoints ($14.40/month)"
+  description = "Enable ECR VPC Interface Endpoints"
   type        = bool
   default     = true
 }

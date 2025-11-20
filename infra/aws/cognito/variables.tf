@@ -1,12 +1,12 @@
-# infra/aws/cognito/variables.tf
+# Cognito Module Variables
 
 variable "cognito_domain" {
-  description = "Cognito domain prefix"
+  description = "Cognito domain prefix (must be globally unique)"
   type        = string
 }
 
 variable "callback_urls" {
-  description = "Allowed callback URLs"
+  description = "Allowed callback URLs for OAuth"
   type        = list(string)
   default     = ["http://localhost:3000/callback"]
 }
@@ -29,13 +29,8 @@ variable "google_client_secret" {
   sensitive   = true
 }
 
-variable "api_gateway_arn" {
-  description = "API Gateway ARN"
-  type        = string
-}
-
 variable "artifacts_bucket_arn" {
-  description = "S3 artifacts bucket ARN"
+  description = "S3 artifacts bucket ARN for IAM policies"
   type        = string
 }
 

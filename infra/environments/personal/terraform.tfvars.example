@@ -37,18 +37,6 @@ high_gpu_node_group = {
   capacity_type = "ON_DEMAND"
 }
 
-daily_budget_limit           = 25
-monthly_budget_limit         = 650
-kill_switch_hourly_threshold = 20
-
-anthropic_secret_name = "ai-agent-platform/anthropic-api-key"
-
-cognito_domain        = "ai-agent-platform-abc123"
-cognito_callback_urls = ["http://localhost:3000/callback"]
-cognito_logout_urls   = ["http://localhost:3000/"]
-
-alert_email = "your-email@example.com"
-
 common_tags = {
   Owner       = "YourName"
   Environment = "personal"
