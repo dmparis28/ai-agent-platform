@@ -1,44 +1,42 @@
-# AI Agent Platform - Frontend
+﻿# AI Agent Platform - Frontend (Next.js)
 
-React + TypeScript frontend with AWS Cognito authentication.
+## Quick Start
 
-## Setup
-
-1. Install dependencies:
 ```bash
+# Install dependencies
 npm install
-```
 
-2. Copy environment variables:
-```bash
-cp .env.example .env
-```
+# Copy environment variables
+cp .env.local.example .env.local
+# Edit .env.local with your Cognito credentials
 
-3. Update `.env` with your Cognito values from Terraform outputs
-
-4. Run development server:
-```bash
+# Run development server
 npm run dev
+
+# Open http://localhost:3000
 ```
 
-5. Build for production:
-```bash
-npm run build
-```
-
-## Deployment to S3
-
-After running `terraform apply`, deploy the built frontend:
+## Deployment to Lambda
 
 ```bash
+# Build for production
 npm run build
-aws s3 sync dist/ s3://ai-agent-platform-frontend --delete
+
+# Package for Lambda
+npm run package:lambda
+
+# Deploy (requires AWS CLI configured)
+aws lambda update-function-code \
+  --function-name nextjs-frontend \
+  --zip-file fileb://./dist/lambda.zip
 ```
 
-## Features
+## Migration from Vite
 
-- AWS Cognito authentication
-- Agent task creation
-- Real-time task monitoring
-- Cost tracking dashboard
-- Mobile-responsive (Galaxy Fold optimized)
+This frontend was migrated from Vite to Next.js for:
+- Server-side rendering (SSR)
+- Better SEO
+- Lambda deployment
+- Infinite scalability
+
+Previous Vite backup: `../backups/fe-vite-backup-*`

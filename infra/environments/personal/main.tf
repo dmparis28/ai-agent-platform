@@ -60,7 +60,7 @@ module "secrets" {
 }
 
 # ============================================
-# Monitoring & Alerts (Required by H100)
+# Monitoring & Alerts
 # ============================================
 
 resource "aws_sns_topic" "alerts" {
@@ -75,53 +75,12 @@ resource "aws_sns_topic_subscription" "email" {
 }
 
 # ============================================
-# Lambda + H100 Architecture
+# Cognito Authentication
 # ============================================
-
-module "h100" {
-  source = "../../aws/h100"
-  count  = var.enable_h100 ? 1 : 0
-
-  vpc_id                  = module.vpc.vpc_id
-  private_subnet_id       = module.vpc.private_subnets[0]
-  vpc_cidr                = var.vpc_cidr
-  snapshot_bucket         = module.storage.artifacts_bucket_name
-  aws_region              = var.aws_region
-  h100_instance_type      = var.h100_instance_type
-  idle_timeout            = var.h100_idle_timeout
-  idle_shutdown_topic_arn = aws_sns_topic.alerts.arn
-
-  tags = local.common_tags
-
-  depends_on = [module.vpc, module.storage, aws_sns_topic.alerts]
-}
-
-module "lambda_agents" {
-  source = "../../aws/lambda"
-  count  = var.enable_lambda ? 1 : 0
-
-  vpc_id                  = module.vpc.vpc_id
-  private_subnet_ids      = module.vpc.private_subnets
-  vpc_cidr                = var.vpc_cidr
-  h100_private_ip         = var.enable_h100 ? module.h100[0].h100_private_ip : ""
-  h100_instance_id        = var.enable_h100 ? module.h100[0].h100_instance_id : ""
-  artifacts_bucket_name   = module.storage.artifacts_bucket_name
-  artifacts_bucket_arn    = module.storage.artifacts_bucket_arn
-  anthropic_secret_name   = var.anthropic_secret_name
-  anthropic_secret_arn    = module.secrets.anthropic_secret_arn
-  task_table_name         = module.storage.tasks_table_name
-  task_table_arn          = module.storage.tasks_table_arn
-  lambda_packages_dir     = var.lambda_packages_dir
-  dependencies_layer_path = var.dependencies_layer_path
-
-  tags = local.common_tags
-
-  depends_on = [module.vpc, module.storage, module.secrets]
-}
 
 module "cognito" {
   source = "../../aws/cognito"
-  count  = var.enable_lambda ? 1 : 0
+  count  = var.enable_lambda_frontend ? 1 : 0
 
   cognito_domain       = var.cognito_domain
   callback_urls        = var.cognito_callback_urls
@@ -135,3 +94,33 @@ module "cognito" {
 
   depends_on = [module.storage]
 }
+
+# ============================================
+# Lambda Frontend (Next.js)
+# ============================================
+
+module "lambda_frontend" {
+  source = "../../aws/lambda-frontend"
+  count  = var.enable_lambda_frontend ? 1 : 0
+  
+  project_name                 = local.project_name
+  lambda_package_path          = "../../../fe/lambda.zip"
+  cognito_user_pool_id         = module.cognito[0].user_pool_id
+  cognito_client_id            = module.cognito[0].app_client_id
+  cognito_identity_pool_id     = module.cognito[0].identity_pool_id
+  api_endpoint                 = "https://placeholder.execute-api.us-east-1.amazonaws.com"
+  task_table_arn               = module.storage.tasks_table_arn
+  artifacts_bucket_arn         = module.storage.artifacts_bucket_arn
+  static_assets_bucket_domain  = "${module.storage.artifacts_bucket_name}.s3.amazonaws.com"
+  event_bus_arn                = "arn:aws:events:${var.aws_region}:${data.aws_caller_identity.current.account_id}:event-bus/default"
+  
+  tags = local.common_tags
+  
+  depends_on = [module.cognito, module.storage]
+}
+
+# ============================================
+# Data Sources
+# ============================================
+
+data "aws_caller_identity" "current" {}
