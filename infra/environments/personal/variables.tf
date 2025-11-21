@@ -159,6 +159,12 @@ variable "enable_h100" {
   default     = true
 }
 
+variable "enable_lambda_frontend" {
+  description = "Enable Lambda frontend (Next.js on Lambda + API Gateway)"
+  type        = bool
+  default     = true
+}
+
 # ============================================
 # Lambda Configuration
 # ============================================
@@ -215,12 +221,14 @@ variable "cognito_logout_urls" {
 variable "google_client_id" {
   description = "Google OAuth client ID"
   type        = string
+  default     = ""
   sensitive   = true
 }
 
 variable "google_client_secret" {
   description = "Google OAuth client secret"
   type        = string
+  default     = ""
   sensitive   = true
 }
 

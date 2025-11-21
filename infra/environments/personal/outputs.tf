@@ -52,50 +52,56 @@ output "anthropic_secret_arn" {
 }
 
 # ============================================
-# H100 Outputs
-# ============================================
-
-output "h100_instance_id" {
-  description = "H100 GPU instance ID"
-  value       = var.enable_h100 ? module.h100[0].h100_instance_id : null
-}
-
-output "h100_private_ip" {
-  description = "H100 private IP address"
-  value       = var.enable_h100 ? module.h100[0].h100_private_ip : null
-}
-
-# ============================================
-# Lambda Outputs
-# ============================================
-
-output "lambda_function_arns" {
-  description = "ARNs of all Lambda agent functions"
-  value       = var.enable_lambda ? module.lambda_agents[0].agent_function_arns : {}
-}
-
-output "event_bus_arn" {
-  description = "EventBridge event bus ARN"
-  value       = var.enable_lambda ? module.lambda_agents[0].event_bus_arn : null
-}
-
-# ============================================
 # Cognito Outputs
 # ============================================
 
 output "cognito_user_pool_id" {
   description = "Cognito User Pool ID"
-  value       = var.enable_lambda ? module.cognito[0].user_pool_id : null
+  value       = var.enable_lambda_frontend ? module.cognito[0].user_pool_id : null
 }
 
 output "cognito_app_client_id" {
   description = "Cognito App Client ID"
-  value       = var.enable_lambda ? module.cognito[0].app_client_id : null
+  value       = var.enable_lambda_frontend ? module.cognito[0].app_client_id : null
 }
 
-output "cognito_auth_url" {
-  description = "Cognito authorization URL"
-  value       = var.enable_lambda ? module.cognito[0].auth_url : null
+output "cognito_identity_pool_id" {
+  description = "Cognito Identity Pool ID"
+  value       = var.enable_lambda_frontend ? module.cognito[0].identity_pool_id : null
+}
+
+output "cognito_domain" {
+  description = "Cognito hosted UI domain"
+  value       = var.enable_lambda_frontend ? module.cognito[0].cognito_domain : null
+}
+
+# ============================================
+# Lambda Frontend Outputs
+# ============================================
+
+output "lambda_frontend_url" {
+  description = "Lambda function URL (direct access)"
+  value       = var.enable_lambda_frontend ? module.lambda_frontend[0].lambda_function_url : null
+}
+
+output "lambda_function_name" {
+  description = "Lambda function name"
+  value       = var.enable_lambda_frontend ? module.lambda_frontend[0].lambda_function_name : null
+}
+
+output "api_gateway_url" {
+  description = "API Gateway endpoint (use this for production)"
+  value       = var.enable_lambda_frontend ? module.lambda_frontend[0].api_gateway_endpoint : null
+}
+
+output "api_gateway_id" {
+  description = "API Gateway ID"
+  value       = var.enable_lambda_frontend ? module.lambda_frontend[0].api_gateway_id : null
+}
+
+output "frontend_url" {
+  description = "Frontend URL (API Gateway - use this one!)"
+  value       = var.enable_lambda_frontend ? module.lambda_frontend[0].frontend_url : null
 }
 
 # ============================================
